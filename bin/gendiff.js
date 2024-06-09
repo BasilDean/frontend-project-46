@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import parseFile from "../src/parseFile.js";
+import gendiff from "../src/gendiff.js";
 const program = new Command();
 
 program
@@ -12,8 +12,7 @@ program
   .argument('<filepath2>')
   .helpOption('-h, --help', 'output usage information')
   .action((filepath1, filepath2) => {
-    console.log('filepath1:', parseFile(filepath1));
-    console.log('filepath2:', parseFile(filepath2));
+    console.log(gendiff(filepath1, filepath2))
   });
 
 program.parse();
