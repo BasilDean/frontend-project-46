@@ -3,29 +3,29 @@ import _ from 'lodash';
 
 const gendiff = (file1, file2) => {
   const json1 = parseFile(file1);
-  const file1Keys = _.keys(json1)
   const json2 = parseFile(file2);
-  const file2Keys = _.keys(json2)
-  const keys = _.union(file1Keys, file2Keys).sort();
-  let result = '{\n';
+  const keys = _.union(Object.keys(json1), Object.keys(json2)).sort();
+  const result = [];
+  result.push('{');
   for (const key of keys) {
-    if (json1.hasOwnProperty(key) && json2.hasOwnProperty(key)) {
+    if (Object.hasOwn(json1, key) && Object.hasOwn(json2, key)) {
       if (json1[key] === json2[key]) {
-        result += `    ${key}: ${json1[key]}\n`;
+        result.push(`    ${key}: ${json1[key]}`);
         continue;
       } else {
-        result += `  - ${key}: ${json1[key]}\n  + ${key}: ${json2[key]}\n`;
+        result.push(`  - ${key}: ${json1[key]}`);
+        result.push(`  + ${key}: ${json2[key]}`);
         continue;
       }
-    } else if (json1.hasOwnProperty(key)) {
-      result += `  - ${key}: ${json1[key]}\n`;
+    } else if (Object.hasOwn(json1, key)) {
+      result.push(`  - ${key}: ${json1[key]}`);
       continue;
     } else {
-      result += `  + ${key}: ${json2[key]}\n`;
+      result.push(`  + ${key}: ${json2[key]}`);
     }
-    result += '}';
+    result.push('}');
   }
-  return result;
+  return result.join('\n');
 }
 
 export default gendiff;

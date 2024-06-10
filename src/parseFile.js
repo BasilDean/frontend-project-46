@@ -11,7 +11,6 @@ const parseFile = (file) => {
  if (file.endsWith('.json')) {
    return JSON.parse(result);
  }
- return result;
 };
 
 export default parseFile;

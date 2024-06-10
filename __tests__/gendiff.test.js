@@ -1,5 +1,5 @@
+/* eslint-env jest */
 import gendiff from "../src/gendiff.js";
-
 
 const expected = `{
   - follow: false
@@ -12,5 +12,5 @@ const expected = `{
 
 
 test('gendiff', () => {
-  expect(gendiff('src/file1.json', 'src/file2.json')).toEqual(expected)
+  expect(gendiff('__fixtures__/file1.json', '__fixtures__/file2.json')).toEqual(expected)
 })
