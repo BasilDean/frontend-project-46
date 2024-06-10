@@ -7,7 +7,7 @@ publish:
 test:
 	npm test
 
-install: install-deps
+install-deps:
 	npx simple-git-hooks
 
 test-coverage:
