@@ -1,27 +1,29 @@
-import parseFile from "../src/parseFile.js";
+import {parseFile, getFileExtension, readFile} from "../src/parseFile.js";
 import _ from 'lodash';
 
 const gendiff = (file1, file2) => {
-  const json1 = parseFile(file1);
-  const json2 = parseFile(file2);
-  const keys = _.union(Object.keys(json1), Object.keys(json2)).sort();
+  const content1 = readFile(file1);
+  const content2 = readFile(file2);
+  const data1 = parseFile(content1, getFileExtension(file1));
+  const data2 = parseFile(content2, getFileExtension(file1));
+  const keys = _.union(Object.keys(data1), Object.keys(data2)).sort();
   const result = [];
   result.push('{');
   for (const key of keys) {
-    if (Object.hasOwn(json1, key) && Object.hasOwn(json2, key)) {
-      if (json1[key] === json2[key]) {
-        result.push(`    ${key}: ${json1[key]}`);
+    if (Object.hasOwn(data1, key) && Object.hasOwn(data2, key)) {
+      if (data1[key] === data2[key]) {
+        result.push(`    ${key}: ${data1[key]}`);
         continue;
       } else {
-        result.push(`  - ${key}: ${json1[key]}`);
-        result.push(`  + ${key}: ${json2[key]}`);
+        result.push(`  - ${key}: ${data1[key]}`);
+        result.push(`  + ${key}: ${data2[key]}`);
         continue;
       }
-    } else if (Object.hasOwn(json1, key)) {
-      result.push(`  - ${key}: ${json1[key]}`);
+    } else if (Object.hasOwn(data1, key)) {
+      result.push(`  - ${key}: ${data1[key]}`);
       continue;
     } else {
-      result.push(`  + ${key}: ${json2[key]}`);
+      result.push(`  + ${key}: ${data2[key]}`);
     }
     result.push('}');
   }
